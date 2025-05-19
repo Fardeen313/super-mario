@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple Mario Game</title>
+  <style>
+    body {
+      margin: 0; 
+      font-family: Arial, sans-serif;
+      background: #87ceeb;
+    }
+    #homeScreen, #gameScreen {
+      text-align: center;
+      margin-top: 50px;
+    }
+    #gameScreen {
+      display: none;
+      position: relative;
+    }
+    canvas {
+      background: #9adfef;
+      border: 3px solid #333;
+      display: block;
+      margin: 20px auto;
+    }
+    #score {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div id="homeScreen" class="active">
+  <h1>Welcome to Simple Mario Game</h1>
+  <button id="startBtn">Start Game</button>
+</div>
+
+<div id="gameScreen">
+  <div id="score">Distance: 0</div>
+  <canvas id="game" width="800" height="400"></canvas>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
+
