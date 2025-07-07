@@ -1,1 +1,51 @@
+name: CI - Build and Push Docker Image
+
+on:
+  push:
+    branches: [ main ]  # or your default branch
+
+env:
+  IMAGE_NAME: fardeenattar/mario-image
+  MANIFEST_REPO: https://github.com/Fardeen313/mario-k8s-manifests.git
+  MANIFEST_DIR: day-5-ingress
+  MANIFEST_FILE: mario.yml
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate timestamped image tag
+        run: echo "TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t $IMAGE_NAME:${{ env.TAG }} .
+
+      - name: Push Docker image
+        run: |
+          docker push $IMAGE_NAME:${{ env.TAG }}
+
+      - name: Clone manifests repo
+        run: |
+          git clone https://x-access-token:${{ secrets.MANIFESTS_REPO_TOKEN }}@github.com/Fardeen313/mario-k8s-manifests.git
+          cd mario-k8s-manifests
+          git config user.name "github-actions"
+          git config user.email "ci@github.com"
+
+          # Replace image tag in deployment manifest
+          sed -i "s|fardeenattar/mario-image:.*|fardeenattar/mario-image:${{ env.TAG }}|" $MANIFEST_DIR/$MANIFEST_FILE
+
+          git add $MANIFEST_DIR/$MANIFEST_FILE
+          git commit -m "CI: Updated image tag to ${{ env.TAG }}"
+          git push
 
