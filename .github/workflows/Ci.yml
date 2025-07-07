@@ -33,7 +33,7 @@ jobs:
       - name: Clone manifests repo
         run: |
           git clone https://github.com/Fardeen313/kube-main.git
-          cd day-5-ingress/
+          cd kube-main/day-5-ingress/
 
           # Update the image tag in deployment manifest
           sed -i "s|fardeenattar/mario-image:.*|fardeenattar/mario-image:$IMAGE_TAG|g" mario.yml
