@@ -31,8 +31,10 @@ jobs:
           docker push $IMAGE_NAME:$IMAGE_TAG
 
       - name: Clone manifests repo
+        env:
+          GH_TOKEN: ${{ secrets.ACTION_TOKEN }}
         run: |
-          git clone https://github.com/Fardeen313/kube-main.git
+          git clone https://x-access-token:${GH_TOKEN}@github.com/Fardeen313/kube-main.git
           cd kube-main/day-5-ingress/
 
           # Update the image tag in deployment manifest
