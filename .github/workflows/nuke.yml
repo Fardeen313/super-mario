@@ -1,22 +1,28 @@
-name: Cluster Nuke
+name: Destroy Minikube Resources
 
 on:
-  workflow_dispatch:         # ✅ Manual run from GitHub UI
   schedule:
-    - cron: '25 12 * * *'     # ✅ Runs daily at 5:55 PM IST (12:25 UTC)
+    - cron: '42 12 * * *'   # 🕕 6:12 PM IST = 12:42 PM UTC
+  workflow_dispatch:         # ✅ Allow manual trigger from GitHub UI
 
 jobs:
-  nuke:
-    name: Nuke test namespace
-    runs-on: self-hosted     # ✅ Your local Windows runner (minikube access)
+  destroy-minikube-resources:
+    runs-on: self-hosted     # ✅ Uses your local GitHub Actions runner (Minikube access)
 
     steps:
-    - name: Nuke all resources in test namespace
-      shell: powershell
-      run: |
-        Write-Host "🔥 Nuking test namespace at $(Get-Date)"
-        kubectl delete all --all -n test
-        kubectl delete ingress --all -n test --ignore-not-found
-        kubectl delete configmap --all -n test --ignore-not-found
-        kubectl delete secret --all -n test --ignore-not-found
-        Write-Host "✅ Nuke complete"
+      - name: Set KUBECONFIG for Minikube
+        shell: powershell
+        run: |
+          $env:KUBECONFIG="$env:USERPROFILE\.kube\config"
+          Write-Host "✅ Using KUBECONFIG at $env:KUBECONFIG"
+
+      - name: Delete all resources in test namespace
+        shell: powershell
+        run: |
+          $env:KUBECONFIG="$env:USERPROFILE\.kube\config"
+          Write-Host "🔥 Nuking test namespace at $(Get-Date)"
+          kubectl delete all --all -n test
+          kubectl delete ingress --all -n test --ignore-not-found
+          kubectl delete configmap --all -n test --ignore-not-found
+          kubectl delete secret --all -n test --ignore-not-found
+          Write-Host "✅ Nuke complete"
