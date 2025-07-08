@@ -1,0 +1,21 @@
+name: Cluster Nuke
+
+on:
+  workflow_dispatch:         # ✅ Allow manual run from GitHub UI
+  schedule:
+    - cron: '52 10 * * *'     # ✅ Runs daily at 4:22 PM IST (10:52 UTC)
+
+jobs:
+  nuke:
+    name: Nuke test namespace
+    runs-on: self-hosted     # ✅ Uses your local runner (Minikube access)
+
+    steps:
+    - name: Nuke all resources in test namespace
+      run: |
+        echo "🔥 Nuking test namespace at $(date)"
+        kubectl delete all --all -n test
+        kubectl delete ingress --all -n test --ignore-not-found
+        kubectl delete configmap --all -n test --ignore-not-found
+        kubectl delete secret --all -n test --ignore-not-found
+        echo "✅ Nuke complete"
