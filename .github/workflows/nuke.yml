@@ -3,7 +3,7 @@ name: Cluster Nuke
 on:
   workflow_dispatch:         # ✅ Allow manual run from GitHub UI
   schedule:
-    - cron: '52 10 * * *'     # ✅ Runs daily at 4:22 PM IST (10:52 UTC)
+    - cron: '10 12 * * *'     # ✅ Runs daily at 5:40 PM IST (12:10 PM UTC)
 
 jobs:
   nuke:
@@ -12,10 +12,11 @@ jobs:
 
     steps:
     - name: Nuke all resources in test namespace
+      shell: powershell
       run: |
-        echo "🔥 Nuking test namespace at $(date)"
+        Write-Host "🔥 Nuking test namespace at $(Get-Date)"
         kubectl delete all --all -n test
         kubectl delete ingress --all -n test --ignore-not-found
         kubectl delete configmap --all -n test --ignore-not-found
         kubectl delete secret --all -n test --ignore-not-found
-        echo "✅ Nuke complete"
+        Write-Host "✅ Nuke complete"
