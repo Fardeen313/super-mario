@@ -1,14 +1,14 @@
 name: Cluster Nuke
 
 on:
-  workflow_dispatch:         # ✅ Allow manual run from GitHub UI
+  workflow_dispatch:         # ✅ Manual run from GitHub UI
   schedule:
-    - cron: '10 12 * * *'     # ✅ Runs daily at 5:40 PM IST (12:10 PM UTC)
+    - cron: '25 12 * * *'     # ✅ Runs daily at 5:55 PM IST (12:25 UTC)
 
 jobs:
   nuke:
     name: Nuke test namespace
-    runs-on: self-hosted     # ✅ Uses your local runner (Minikube access)
+    runs-on: self-hosted     # ✅ Your local Windows runner (minikube access)
 
     steps:
     - name: Nuke all resources in test namespace
