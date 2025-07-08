@@ -6,6 +6,95 @@
   <title>Simple Mario Game</title>
   <style>
     body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #87ceeb, #ffffff);
+    }
+
+    #homeScreen, #gameScreen {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    #homeScreen {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      max-width: 400px;
+      margin: 100px auto;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    #homeScreen h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #startBtn {
+      font-size: 18px;
+      padding: 12px 30px;
+      background-color: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #startBtn:hover {
+      background-color: #cc0000;
+    }
+
+    #gameScreen {
+      display: none;
+      position: relative;
+    }
+
+    canvas {
+      background: #e6faff;
+      border: 4px solid #444;
+      display: block;
+      margin: 30px auto;
+      border-radius: 12px;
+    }
+
+    #score {
+      font-size: 22px;
+      font-weight: bold;
+      background: #fff3cd;
+      color: #856404;
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<div id="homeScreen" class="active">
+  <h1>Welcome to the Mario Game</h1>
+  <button id="startBtn">🎮 Start Game</button>
+</div>
+
+<div id="gameScreen">
+  <div id="score">Distance: 0</div>
+  <canvas id="game" width="800" height="400"></canvas>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple Mario Game</title>
+  <style>
+    body {
       margin: 0; 
       font-family: Arial, sans-serif;
       background: #87ceeb;
@@ -46,3 +135,5 @@
 </body>
 </html>
 
+ -->
+ 
