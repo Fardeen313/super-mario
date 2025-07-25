@@ -8,6 +8,139 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      color: #fff;
+    }
+
+    #homeScreen, #gameScreen {
+      text-align: center;
+      margin-top: 60px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+      color: #ffeaa7;
+    }
+
+    button#startBtn {
+      background: linear-gradient(to right, #f39c12, #f1c40f);
+      color: #2c3e50;
+      padding: 14px 36px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    button#startBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    canvas {
+      background: #fdf200;
+      border: 5px solid #34495e;
+      display: block;
+      margin: 20px auto;
+      border-radius: 14px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    }
+
+    #score {
+      font-size: 24px;
+      font-weight: bold;
+      background: rgba(44, 62, 80, 0.9);
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .mario-avatar {
+      font-size: 70px;
+      margin: 15px auto 10px;
+      text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .mario-name {
+      font-size: 22px;
+      margin-bottom: 25px;
+      font-weight: 600;
+      opacity: 0.95;
+      color: #ffeaa7;
+    }
+
+    @media (max-width: 768px) {
+      canvas {
+        width: 90% !important;
+        height: auto !important;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      #score {
+        font-size: 18px;
+      }
+
+      button#startBtn {
+        font-size: 16px;
+        padding: 10px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="homeScreen" class="active">
+  <div class="mario-avatar">👨‍🔧</div>
+  <div class="mario-name">Mario the Hero</div>
+  <h1>Welcome to Mario Adventure</h1>
+  <button id="startBtn">Start Game</button>
+</div>
+
+<div id="gameScreen">
+  <div id="score">Distance: 0</div>
+  <canvas id="game" width="800" height="400"></canvas>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mario Adventure</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to bottom right, #1e3c72, #2a5298);
       color: #fff;
     }
@@ -92,7 +225,7 @@
 
 <script src="main.js"></script>
 </body>
-</html>
+</html> -->
 
 
 <!-- <!DOCTYPE html>
