@@ -3,129 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mario Adventure</title>
+  <title>Mr. Bean Adventure</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-      color: #fff;
-      height: 100vh;
+      box-sizing: border-box;
     }
 
-    #starfield {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+      animation: backgroundShift 10s ease infinite;
+      color: white;
+    }
+
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .star {
       position: absolute;
+      width: 2px;
+      height: 2px;
       background: white;
       border-radius: 50%;
       opacity: 0.8;
-      animation: fall linear infinite, breathe 2s ease-in-out infinite;
+      animation: fall linear infinite;
     }
 
     @keyframes fall {
-      0% {
-        transform: translateY(-10px);
-        opacity: 0.5;
-      }
-      100% {
-        transform: translateY(110vh);
-        opacity: 0.1;
-      }
+      from { transform: translateY(-10px); }
+      to { transform: translateY(110vh); }
     }
 
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.6); }
+    @keyframes breathing {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.6; }
     }
 
-    #homeScreen, #gameScreen {
+    #homeScreen {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
       text-align: center;
-      padding-top: 8vh;
-      animation: fadeIn 1s ease-in-out;
-      position: relative;
-      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 1;
+      animation: fadeIn 2s ease-in-out;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
+      from { opacity: 0; transform: translateY(-30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       font-size: 3em;
-      margin-bottom: 10px;
-      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
       color: #ffeaa7;
+      text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      animation: breathing 4s infinite;
     }
 
-    button#startBtn {
+    #startBtn {
       background: linear-gradient(to right, #f39c12, #f1c40f);
-      color: #2c3e50;
-      padding: 14px 36px;
-      font-size: 18px;
+      padding: 14px 40px;
+      font-size: 20px;
       font-weight: bold;
+      border-radius: 12px;
       border: none;
-      border-radius: 10px;
+      color: #2c3e50;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      transition: 0.3s ease;
+      animation: breathing 3s infinite;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
 
-    button#startBtn:hover {
+    #startBtn:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 20px rgba(255,255,255,0.4);
     }
 
-    canvas {
-      background: linear-gradient(to bottom, #2c3e50, #000000);
-      border: 5px solid #34495e;
-      display: block;
-      margin: 20px auto;
-      border-radius: 14px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-      max-width: 90vw;
-      max-height: 60vh;
+    #gameScreen {
+      display: none;
+      padding-top: 20px;
+      text-align: center;
     }
 
     #score {
-      font-size: 24px;
-      font-weight: bold;
-      background: rgba(44, 62, 80, 0.9);
-      display: inline-block;
-      padding: 10px 24px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
-      margin-bottom: 20px;
-    }
-
-    .mario-avatar {
-      font-size: 70px;
-      margin: 15px auto 10px;
-      text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
-    }
-
-    .mario-name {
       font-size: 22px;
-      margin-bottom: 25px;
-      font-weight: 600;
-      opacity: 0.95;
-      color: #ffeaa7;
+      background: rgba(0, 0, 0, 0.5);
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    canvas {
+      background: #1a1a1a;
+      border: 5px solid #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      display: block;
+      margin: 0 auto;
     }
 
     @media (max-width: 768px) {
       canvas {
-        width: 90% !important;
+        width: 95% !important;
         height: auto !important;
       }
 
@@ -133,11 +124,7 @@
         font-size: 2em;
       }
 
-      #score {
-        font-size: 18px;
-      }
-
-      button#startBtn {
+      #startBtn {
         font-size: 16px;
         padding: 10px 24px;
       }
@@ -146,63 +133,42 @@
 </head>
 <body>
 
-<!-- Starfield Background -->
-<div id="starfield"></div>
+<!-- Falling Stars -->
+<script>
+  const starCount = 120;
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.animationDuration = `${2 + Math.random() * 3}s`;
+    star.style.top = `${Math.random() * 100}vh`;
+    document.body.appendChild(star);
+  }
+</script>
 
-<!-- Home Screen -->
+<!-- Home screen -->
 <div id="homeScreen">
-  <div class="mario-avatar">👨‍🔧</div>
-  <div class="mario-name">Mario the Hero</div>
-  <h1>Welcome to Mario Adventure</h1>
+  <h1>Mr. Bean’s Dash</h1>
   <button id="startBtn">Start Game</button>
 </div>
 
-<!-- Game Screen -->
-<div id="gameScreen" style="display: none;">
+<!-- Game screen -->
+<div id="gameScreen">
   <div id="score">Distance: 0</div>
   <canvas id="game" width="800" height="400"></canvas>
 </div>
 
+<script src="main.js"></script>
 <script>
-  // Show game screen only after clicking start
-  document.getElementById("startBtn").addEventListener("click", () => {
+  document.getElementById("startBtn").addEventListener("click", function () {
     document.getElementById("homeScreen").style.display = "none";
     document.getElementById("gameScreen").style.display = "block";
+    startGame();
   });
-
-  // Generate falling, breathing stars
-  const starfield = document.getElementById("starfield");
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-
-  for (let i = 0; i < 100; i++) {
-    const star = document.createElement("div");
-    star.className = "star";
-
-    const size = Math.random() * 2 + 1;
-    const duration = 3 + Math.random() * 5;
-    const left = Math.random() * screenWidth;
-
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    star.style.left = `${left}px`;
-    star.style.top = `-${Math.random() * 100}px`;
-    star.style.animationDuration = `${duration}s, 2s`;
-
-    starfield.appendChild(star);
-
-    // Restart position after fall
-    setTimeout(() => {
-      setInterval(() => {
-        star.style.top = `-${Math.random() * 100}px`;
-      }, duration * 1000);
-    }, i * 100);
-  }
 </script>
-
-<script src="main.js"></script>
 </body>
 </html>
+
 
 
 
