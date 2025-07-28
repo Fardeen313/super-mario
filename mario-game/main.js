@@ -1,93 +1,95 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+canvas.width = 800;
+canvas.height = 400;
 
-let character = {
-  x: 50,
-  y: canvas.height - 100,
-  width: 60,
-  height: 80,
-  velocityY: 0,
+let runner = {
+  x: 100, y: canvas.height - 100,
+  width: 60, height: 60,
+  vy: 0, gravity: 1.5,
   grounded: false,
-  jumpPower: -20,
-  gravity: 1.5,
-  legSwap: true // for leg animation
+  legToggle: false,
 };
 
-let isRunning = false;
+const obstacles = [];
+let frame = 0;
+let gameRunning = false;
 
-// Load emoji-style Mr. Bean face
-const face = new Image();
-face.src = "https://em-content.zobj.net/thumbs/120/apple/354/nerd-face_1f913.png"; // You can replace this with any Mr. Bean-like image
+// Load Mr Bean face image
+const beanImg = new Image();
+beanImg.src = 'https://favpng.com/png_view/mrbean-rowan-atkinson-mr-bean-zazu-humour-laughter-png/YPQPVrjE' ;
 
-// Key event for jump
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space" && character.grounded) {
-    character.velocityY = character.jumpPower;
-    character.grounded = false;
+document.addEventListener("keydown", e => {
+  if (e.code === "Space" && runner.grounded) {
+    runner.vy = -20;
+    runner.grounded = false;
   }
 });
 
-// Start game
 function startGame() {
-  isRunning = true;
-  requestAnimationFrame(gameLoop);
+  gameRunning = true;
+  requestAnimationFrame(loop);
 }
 
-function gameLoop() {
-  if (!isRunning) return;
-
+function loop() {
+  if (!gameRunning) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Physics
-  character.velocityY += character.gravity;
-  character.y += character.velocityY;
-
-  if (character.y > canvas.height - character.height - 30) {
-    character.y = canvas.height - character.height - 30;
-    character.velocityY = 0;
-    character.grounded = true;
+  // squares as obstacles
+  if (frame % 120 === 0) {
+    obstacles.push({ x: canvas.width, y: canvas.height - 50, w: 30, h: 50 });
   }
 
-  // Animate Legs (simple leg swing simulation)
-  drawMrBean(character.x, character.y, character.legSwap);
-  character.legSwap = !character.legSwap;
+  obstacles.forEach((obs, index) => {
+    obs.x -= 4;
+    ctx.fillStyle = "#e74c3c";
+    ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
 
-  character.x += 2;
+    // collision?
+    if (runner.x < obs.x + obs.w && runner.x + runner.width > obs.x &&
+        runner.y < obs.y + obs.h && runner.y + runner.height > obs.y) {
+      gameRunning = false;
+    }
 
-  requestAnimationFrame(gameLoop);
+    if (obs.x + obs.w < 0) obstacles.splice(index,1);
+  });
+
+  // gravity + position
+  runner.vy += runner.gravity;
+  runner.y += runner.vy;
+  if (runner.y > canvas.height - runner.height - 20) {
+    runner.y = canvas.height - runner.height - 20;
+    runner.vy = 0;
+    runner.grounded = true;
+  }
+
+  drawRunner();
+  frame++;
+  requestAnimationFrame(loop);
 }
 
-function drawMrBean(x, y, legSwap) {
-  // Draw face
-  ctx.drawImage(face, x, y, 60, 60);
+function drawRunner() {
+  const { x, y, width, height } = runner;
+  ctx.drawImage(beanImg, x, y, width, height);
 
-  // Draw body
-  ctx.fillStyle = "#2c3e50";
-  ctx.fillRect(x + 20, y + 60, 20, 20);
-
-  // Legs
   ctx.strokeStyle = "#000";
   ctx.lineWidth = 4;
-
   ctx.beginPath();
-  if (legSwap) {
-    // Left forward, right back
-    ctx.moveTo(x + 25, y + 80);
-    ctx.lineTo(x + 15, y + 100);
-    ctx.moveTo(x + 35, y + 80);
-    ctx.lineTo(x + 45, y + 100);
+  if (runner.legToggle) {
+    ctx.moveTo(x+15,y+height);
+    ctx.lineTo(x+5,y+height+20);
+    ctx.moveTo(x+45,y+height);
+    ctx.lineTo(x+55,y+height+20);
   } else {
-    // Right forward, left back
-    ctx.moveTo(x + 25, y + 80);
-    ctx.lineTo(x + 35, y + 100);
-    ctx.moveTo(x + 35, y + 80);
-    ctx.lineTo(x + 25, y + 100);
+    ctx.moveTo(x+15,y+height);
+    ctx.lineTo(x+25,y+height+20);
+    ctx.moveTo(x+45,y+height);
+    ctx.lineTo(x+35,y+height+20);
   }
   ctx.stroke();
+  runner.legToggle = !runner.legToggle;
 }
 
-// Trigger start
-document.getElementById("startBtn").addEventListener("click", startGame);
 
 
 // const homeScreen = document.getElementById('homeScreen');
